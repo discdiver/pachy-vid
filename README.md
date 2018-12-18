@@ -37,10 +37,22 @@ In the code I used an updated version of cv2, a popular image and video processi
 
 I decided to output each video's frames to a labeled directory. I labeled each frame file with the name of the video it origiginated from and the frame number.
 
-I used the Pachyderm beginner tutorial Dockerfile as a starting point and reworked it following several best practices. 
-I updated the parent Ubuntu image to the latest version.
-I had to add a timezone package and install it earlier than some other packages to remove a prompt that made the Dockerfile build fail.
-I put one package to install on each line for legibility.
-I removed the unneeded numpy package.
-I removed the clean command because I read elsewhere that Ubuntu does that automatically on build.
+### Dockerfile:
+- Used the Pachyderm beginner tutorial Dockerfile as a starting point and reworked it following several best practices. 
+- Updated the parent Ubuntu image to the latest version.
+- Had to add a timezone package and install it earlier than some other packages to remove a prompt that made the Dockerfile build fail.
+- Moved opencv install to a pip3 install
+- Put one package to install on each line for legibility.
+- Removed the unneeded numpy package.
+- Removed the clean command because I read that Ubuntu image does that automatically after build.
 
+### .py file
+- Created a function to turn videos into images.
+- Function finds number of frames in video
+- Function outputs total number of frames up to a maximum of 1,000.
+TODO - User can input number of frames to output up to a max of 1,000.
+- Wraps the read and write in a try-except statement for error catching
+- Each video's image frames are written to a directory with name of the video
+- Each frame is identified by the video's prefix and a number (i.e. frame one has the number 1).
+
+The code walks the file system to find all videos and calls make_images() for each video.
