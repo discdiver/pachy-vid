@@ -1,4 +1,5 @@
 # Example
+# DRAFT. DO NOT USE.
 ## Videos to Frames
 
 ##Insert video camera, flipped arrow, still camera and pachyderm logo
@@ -36,7 +37,9 @@ Here's the pipeline spec, python code, and Dockerfile that make the magic happen
 
 Below is the pipeline spec and python code we're using. Let's walk through the details.
 
-# edges.json
+# frames.json
+```
+REPLACE
 {
   "pipeline": {
     "name": "edges"
@@ -52,14 +55,17 @@ Below is the pipeline spec and python code we're using. Let's walk through the d
     }
   }
 }
-Our pipeline spec contains a few simple sections. First is the pipeline name, edges. Then we have the transform which specifies the docker image we want to use, pachyderm/opencv (defaults to DockerHub as the registry), and the entry point edges.py. Lastly, we specify the input. Here we only have one "atom" input, our images repo with a particular glob pattern.
+```
+Our pipeline spec contains four simple sections. First is the pipeline name, frames. Second is the transform that specifies the Docker image to use, pachyderm/frames (defaults to DockerHub for the registry), and the entry point frames.py. Third is the input. Here we have one "atom" input: our images repo with a '/*' glob pattern.
 
-The glob pattern defines how the input data can be broken up if we wanted to distribute our computation. /* means that each file can be processed individually, which makes sense for images. Glob patterns are one of the most powerful features of Pachyderm so when you start creating your own pipelines, check out the :doc:`../reference/pipeline_spec`.
+The glob pattern defines how the input data can be broken up for parallel processing. '/*' means that each top level file can be processed individually, assuming you have enough workers available. This setting makes sense for videos and the file structure we've defined. Glob patterns are one of the most powerful features of Pachyderm. When you start creating your own pipelines, check out the :doc:`../reference/pipeline_spec`. 
+
+The final part of the pipeline spec is "enable_stats", which allows you to see useful information about the pipeline ??
 
 
 CHANGE this, this is just placeholder.
-
-# edges.py
+```
+# frames.py
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
@@ -78,6 +84,8 @@ def make_edges(image):
 for dirpath, dirs, files in os.walk("/pfs/images"):
    for file in files:
        make_edges(os.path.join(dirpath, file))
+```
+
 Our python code is really straight forward. We're simply walking over all the images in /pfs/images, do our edge detection and write to /pfs/out.
 
 /pfs/images and /pfs/out are special local directories that Pachyderm creates within the container for you. All the input data for a pipeline will be found in /pfs/<input_repo_name> and your code should always write out to /pfs/out. Pachyderm will automatically gather everything you write to /pfs/out and version it as this pipeline's output.
