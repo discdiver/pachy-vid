@@ -47,4 +47,4 @@ The Function finds the total number of frames in video. The read and write funct
 The script walks the file system to find files that match the specified video formats and calls *make_images()* for each file.
 
 ### frames.json
-This is the Pachyderm Pipeline specification. It pulls the Docker image from my Docker Hub registry. The *parallelism_spec* is set to *constant: 3* to use 3 workers and the *glob* pattern will run each top level file or directory in the input atom repo as its own datum. This should make for efficient parallel processing of multiple video files.
+This is the Pachyderm Pipeline specification. It pulls the Docker image from my Docker Hub registry. The *parallelism_spec* is set to *coefficient: 2* to use 2 workers per node and the *glob* pattern will run each top level file or directory in the input atom repo as its own datum. This should make for efficient parallel processing of multiple video files.
