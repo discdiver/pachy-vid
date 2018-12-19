@@ -10,7 +10,7 @@
   },
   "transform": {
     "cmd": [ "python", "./frames.py" ],
-    "image": "discdiver/frames:v1.30"
+    "image": "discdiver/frames:v1.31"
   },
   "enable_stats": true
 }
