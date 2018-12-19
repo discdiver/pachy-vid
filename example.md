@@ -1,6 +1,6 @@
 # Example
-# DRAFT. DO NOT USE.
-## Videos to Frames
+
+## Videos to image frames with Pachyderm
 
 ##Insert video camera, flipped arrow, still camera and pachyderm logo
 
@@ -39,68 +39,99 @@ Below is the pipeline spec and python code we're using. Let's walk through the d
 
 # frames.json
 ```
-REPLACE
 {
   "pipeline": {
-    "name": "edges"
-  },
-  "transform": {
-    "cmd": [ "python3", "/edges.py" ],
-    "image": "pachyderm/opencv"
+    "name": "images_pipeline"
   },
   "input": {
     "atom": {
-      "repo": "images",
-      "glob": "/*"
+      "glob": "/*",
+      "repo": "videos"
     }
-  }
+  },
+  "transform": {
+    "cmd": [ "python", "./frames.py" ],
+    "image": "discdiver/frames:v1.32"
+  },
+  "parallelism_spec":{
+    "coefficient": 2
+  },
+  "enable_stats": true,
 }
 ```
-Our pipeline spec contains four simple sections. First is the pipeline name, frames. Second is the transform that specifies the Docker image to use, pachyderm/frames (defaults to DockerHub for the registry), and the entry point frames.py. Third is the input. Here we have one "atom" input: our images repo with a '/*' glob pattern.
 
-The glob pattern defines how the input data can be broken up for parallel processing. '/*' means that each top level file can be processed individually, assuming you have enough workers available. This setting makes sense for videos and the file structure we've defined. Glob patterns are one of the most powerful features of Pachyderm. When you start creating your own pipelines, check out the :doc:`../reference/pipeline_spec`. 
+This Pachyderm pipeline spec contains five sections. First is the pipeline name, *frames*. Third is the input. Here we have one "atom" input: our images repo with a '/*' glob pattern. Second is the transform that specifies the Docker image to use, *discdiver/frames:v1.32* (defaults to Docker Hub for the registry), and the entry point script *frames.py*. 
 
-The final part of the pipeline spec is "enable_stats", which allows you to see useful information about the pipeline ??
+The glob pattern defines how the input data can be broken up for parallel processing. '/*' means that each top level file can be processed individually, assuming you have enough workers available. This setting makes sense for videos in this example. Glob patterns are one of the most powerful features of Pachyderm. When you start creating your own pipelines, check out the :doc:`../reference/pipeline_spec`. 
+
+The final part of the pipeline spec is "enable_stats:true", which allows you to see useful information about the pipeline
 
 
 CHANGE this, this is just placeholder.
 ```
 # frames.py
+import os
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-import os
 
-# make_edges reads an image from /pfs/images and outputs the result of running
-# edge detection on that image to /pfs/out. Note that /pfs/images and
-# /pfs/out are special directories that Pachyderm injects into the container.
-def make_edges(image):
-   img = cv2.imread(image)
-   tail = os.path.split(image)[1]
-   edges = cv2.Canny(img,100,200)
-   plt.imsave(os.path.join("/pfs/out", os.path.splitext(tail)[0]+'.png'), edges, cmap = 'gray')
+top = os.getcwd()
 
-# walk /pfs/images and call make_edges on every file found
-for dirpath, dirs, files in os.walk("/pfs/images"):
-   for file in files:
-       make_edges(os.path.join(dirpath, file))
+def make_images(video, max_images=1000):
+    '''
+    Outputs .jpg images from a video file
+
+    Args:
+        video (str):     File name of video
+        max_images (int): Maximumum number of images to output per video.
+    Returns:
+        none
+    '''
+
+    file_name = os.path.split(video)[1]
+    file_no_ext = file_name.split(".")[0]
+
+    vidcap = cv2.VideoCapture(video)
+    vid_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    count = 0             # counter to stay under max images
+    #print("/pfs/out/{}".format(file_no_ext))
+    os.mkdir("/pfs/out/{}".format(file_no_ext))  #cv2 requires directory to exist
+
+    while count < max_images and count < vid_length:
+        try:
+            success, image = vidcap.read()
+            cv2.imwrite(os.path.join("/pfs/out/{}".format(file_no_ext), file_no_ext + "frame{:d}.jpg".format(count)), image)
+        except Exception as e:
+            print("Oops, there was an exception: {}".format(e))
+
+        count += 1
+
+ok_file_type = {'mp4', '3gp', 'flv', 'mkv'}
+
+# walk /pfs/videos and call make_images on every file found
+for dirpath, dirs, files in os.walk("/pfs/videos"):
+    for file in files:
+        if file[-3:] in ok_file_type:
+            make_images(os.path.join(dirpath, file))
+
 ```
 
-Our python code is really straight forward. We're simply walking over all the images in /pfs/images, do our edge detection and write to /pfs/out.
+ython code is really straight forward. We're simply walking over all the images in /pfs/images, do our edge detection and write to /pfs/out.
 
-/pfs/images and /pfs/out are special local directories that Pachyderm creates within the container for you. All the input data for a pipeline will be found in /pfs/<input_repo_name> and your code should always write out to /pfs/out. Pachyderm will automatically gather everything you write to /pfs/out and version it as this pipeline's output.
+/pfs/images_pipeline and /pfs/out are local directories that Pachyderm creates for you. All the input data for a pipeline will be found in */pfs/input_repo_name*, where *input_repo_name* is specified in your Pachyderm .json specification file. 
 
+Your code should always write out to */pfs/out* or a subdirectory you create inside */pfs/out*. Pachyderm will automatically gather everything written to /pfs/out and version it as the pipeline's output commit.
 
 
 ## Step 3: Put Data into Pachyderm
 
 From the command line use ` put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket. In this case, if you have the current repo cloned you can just upload the video file in this project folder. Or you can upload other video files.
 
-Also specify the repo name "videos", the branch name "master", and what we want to name the video file, "buck_bunny.png".
+Also specify the repo name "videos", the branch name "master", and a name for the video file, e.g. "buck_bunny.mp4".
 
 ``` pachctl put-file videos master buck_bunny.mp4 -f /buck_bunny.mp4 ```
 
-When you add file to Pachyderm it make a commit, much like a Git commit. 
+When you add a file to Pachyderm it automatically makes a commit, much like a Git commit. 
 
 ## Step 4: View the commit 
 See the commit with
@@ -112,24 +143,23 @@ and see the files committed with
 See the individual frames by getting them from Pachyerm and viewing them with one of the following commands:
 ```
 # on OSX
-$ pachctl get-file videos master buck_bunny01.png | open -f -a /Applications/Preview.app
+$ pachctl get-file videos master buck_bunny1.png | open -f -a /Applications/Preview.app
 
 # on Linux
-$ pachctl get-file videos master buck_bunny0001.png | display
+$ pachctl get-file videos master buck_bunny1.png | display
 ```
 
 SHOW screenshot of images.
 
-Step 7: Explore your pipeline in the Pachyderm dashboard
+## Step 7: Explore your pipeline in the Pachyderm dashboard
 When you deployed Pachyderm locally, the Pachyderm Enterprise dashboard was also deployed by default. This dashboard lets you interactively visualize, manipulate, and debug your pipeline. You can also explore your data on the dashboard. To access your dashboard visit localhost:30080 in an internet browser (e.g., Google Chrome). You should see something similar to this:
 **image of dashboard**
 
-Step 8: Build off this example
-You've seen just how easy it is to set up a Pachyderm Pipeline that takes in a file of one type, manipulates it, and ouptputs new files. 
+## Step 8: Build off this example
+You've seen just how easy it is to set up a Pachyderm Pipeline that takes in a file of one type, manipulates it, and ouptputs new files. To make changes to *frames.py* or *frames.json* and quickly iterate, check out the [Pachyderm Workflow]() document.
 
-Step 9: Try out another example or jump into the docs. LINKS
-
+## Step 9: Try out another example or jump into the docs. 
+[Pachyderm Examples](http://docs.pachyderm.io/en/stable/examples/README.html)
+[Pachyderm Fundamentals](http://docs.pachyderm.io/en/stable/fundamentals/getting_data_into_pachyderm.html)
 
 We're hear to help you every step of the way. Please submit any issues or questions you come across on GitHub, Slack, or email at support@pachyderm.io! LINKS
-
-
