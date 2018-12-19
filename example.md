@@ -125,13 +125,13 @@ Your code should always write out to */pfs/out* or a subdirectory you create ins
 
 ## Step 3: Put Data into Pachyderm
 
-From the command line use ` put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket. In this case, if you have the current repo cloned you can just upload the video file in this project folder. Or you can upload other video files.
+From the command line use `put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket (e.g. s3). In this case, if you have the current repo cloned you can just upload a video file from this project folder. Or you can upload a video file of type .mp4, .flv, mkv, or 3gp. 
 
-Also specify the repo name "videos", the branch name "master", and a name for the video file, e.g. "buck_bunny.mp4".
+Also specify the repo name "videos", the branch name "master", a name for the video file, e.g. "buck_bunny.mp4", and the path to the file.
 
 ``` pachctl put-file videos master buck_bunny.mp4 -f /buck_bunny.mp4 ```
 
-When you add a file to Pachyderm it automatically makes a commit, much like a Git commit. 
+When you add a file to Pachyderm it automatically makes a commit of your data. 
 
 ## Step 4: View the commit 
 See the commit with
@@ -143,10 +143,7 @@ and see the files committed with
 See the individual frames by getting them from Pachyerm and viewing them with one of the following commands:
 ```
 # on OSX
-$ pachctl get-file videos master buck_bunny1.png | open -f -a /Applications/Preview.app
-
-# on Linux
-$ pachctl get-file videos master buck_bunny1.png | display
+$ pachctl get-file images_pipeline master buck_bunny/buck_bunnyframe1.jpg | open -f -a /Applications/Preview.app
 ```
 
 SHOW screenshot of images.
@@ -162,4 +159,4 @@ You've seen just how easy it is to set up a Pachyderm Pipeline that takes in a f
 [Pachyderm Examples](http://docs.pachyderm.io/en/stable/examples/README.html)
 [Pachyderm Fundamentals](http://docs.pachyderm.io/en/stable/fundamentals/getting_data_into_pachyderm.html)
 
-We're hear to help you every step of the way. Please submit any issues or questions you come across on GitHub, Slack, or email at support@pachyderm.io! LINKS
+We're hear to help you every step of the way. Please submit any issues or questions you come across on GitHub, Slack, or email at support@pachyderm.io!
