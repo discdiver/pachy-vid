@@ -1,0 +1,16 @@
+{
+  "pipeline": {
+    "name": "images_pipeline"
+  },
+  "input": {
+    "atom": {
+      "glob": "/*",
+      "repo": "videos"
+    }
+  },
+  "transform": {
+    "cmd": [ "python", "./frames.py" ],
+    "image": "discdiver/frames:v1.30"
+  },
+  "enable_stats": true
+}
