@@ -1,0 +1,7 @@
+.git
+.ipynb_checkpoints/*
+.ipynb
+.DS_Store
+.gitignore
+.md
+.jpg
