@@ -1,5 +1,4 @@
-# pachy-vid
-#Pachyderm video to image frames project
+# Pachyderm video to image frames project
 
 This repo contains a Pachyderm demonstration project. It shows how a user can use Pachyderm to easily break a video file into image frames using [Pachyderm](http://pachyderm.io/) and the [opencv library](https://docs.opencv.org/3.4/dd/d43/tutorial_py_video_display.html). 
 
