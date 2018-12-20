@@ -11,7 +11,7 @@ Pachyderm quickly processes multiple videos simultaneously through parallelizati
  Let's get started!
 
 ## Prerequisites
-This example assumes you have Pachyderm running locally. Check out the [Local Installation instructions](https://pachyderm.readthedocs.io/en/stable/getting_started/local_installation.html) if you haven’t installed pachyderm. 
+This example assumes you have Pachyderm running locally. Check out the [Local Installation instructions](https://pachyderm.readthedocs.io/en/stable/getting_started/local_installation.html) if you haven’t installed pachyderm. This example has been run with Pachyderm version 1.8.0.
 
 ## Step 1: Create a Pachyderm repo
 
