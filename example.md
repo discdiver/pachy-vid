@@ -1,6 +1,4 @@
-# Pachyderm Example
-
-## Videos to images
+# Pachyderm Example: Videos to images
 
 ![Screenshot](images/ss15.png)
       
