@@ -7,12 +7,13 @@ import numpy as np
 
 top = os.getcwd()
 
-def make_images(video, max_images = 1000):
+def make_images(video, max_images=1000):
     '''
-    Output an image for each of first 1000 frames in each video
+    Outputs .jpg images from a video file
 
     Args:
-        video: string  # file name of video
+        video (str):     File name of video
+        max_images (int): Maximumum number of images to output per video.
     Returns:
         none
     '''
@@ -25,12 +26,12 @@ def make_images(video, max_images = 1000):
 
     count = 0             # counter to stay under max images
     #print("/pfs/out/{}".format(file_no_ext))
-    # os.mkdir("/pfs/out/{}".format(file_no_ext))  #cv2 requires directory to exist to write to it
+    os.mkdir("/pfs/out/{}".format(file_no_ext))  #cv2 requires directory to exist
 
     while count < max_images and count < vid_length:
         try:
             success, image = vidcap.read()
-            cv2.imwrite(os.path.join("/pfs/out", file_no_ext + "frame{:d}.jpg".format(count)), image)
+            cv2.imwrite(os.path.join("/pfs/out/{}".format(file_no_ext), file_no_ext + "frame{:d}.jpg".format(count)), image)
         except Exception as e:
             print("Oops, there was an exception: {}".format(e))
 
