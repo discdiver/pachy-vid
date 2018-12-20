@@ -32,3 +32,5 @@ $ export ADDRESS=192.168.99.100:30650
 Return to step 7 until you get everything working the way you want.
 
 The Pachyderm team is here to help you every step of the way. Please submit any issues or questions you come across on [GitHub](https://github.com/pachyderm/pachyderm), [Slack](https://pachyderm-users.slack.com), or email at support@pachyderm.io!
+
+## Note. The latest version of this document is being developed collaboratively as a Google Doc [here](https://docs.google.com/document/d/1a2QkXG9y81VFqAswOeSzBROrys5XHK1YSJk6xfUja2A/edit?usp=sharing).
