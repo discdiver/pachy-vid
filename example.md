@@ -180,12 +180,12 @@ Alternatively, in the Pachyderm dashboard, you can navigate to the output files 
 There's lots to checkout in the Pachyderm dashboard, so have a look around!
 
 ## Step 6: Keep building!
-You've seen just how easy it is to set up a Pachyderm pipeline that takes in video files, manipulates them, and outputs new image files. You've also had a quick look at the Pachyderm dashboard.
+You've seen just how easy it is to set up a Pachyderm pipeline that takes in video files, manipulates them, and outputs new image files. You've also had a quick look at the Pachyderm dashboard. Now you can go forth and make image slices from your favorite home videos to put on holiday cards, bibs, or banners.
 
 To make changes to *frames.py* or *frames.json* and iterate quickly, check out the [Pachyderm Workflow](/pachderm_workflow.md) document.
 
 If you want to see what else Pachyderm can do, try out another example from the [Pachyderm Examples](http://docs.pachyderm.io/en/stable/examples/README.html).
 
-When you're ready to upgrade to Enterprise talk to the friendly folks at [sales](mailto:sales@pachyderm.io). 
+If you're ready to upgrade to Enterprise, talk to the friendly folks at [sales](mailto:sales@pachyderm.io). 
 
 The Pachyderm team is here to help you every step of the way. Please submit any issues or questions you come across on [GitHub](https://github.com/pachyderm/pachyderm), [Slack](https://pachyderm-users.slack.com), or email at support@pachyderm.io!
