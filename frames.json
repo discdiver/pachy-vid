@@ -12,8 +12,8 @@
     "cmd": [ "python", "./frames.py" ],
     "image": "discdiver/frames:v1.33"
   },
-  "parallelism_spec":{
+  "parallelism_spec": {
     "coefficient": 2
   },
-  "enable_stats": true,
+  "enable_stats": true
 }
