@@ -4,18 +4,20 @@
 
 <img src="./camera.svg">
       
-In this example you'll use Pachyderm to take one or more video files and split them into individual frames using the cv2 library. Although it requires little code, this program is pretty cool. With this example running, getting individual frames from videos is a piece of cake. 
+In this example you'll use Pachyderm to take one or more video files and split them into individual frames using the opencv library. With this example running, getting individual image frames from videos is a piece of cake. 
 
-Pachyderm quickly processes multiple videos simultaneously through parallelization. Additionally, when videos are added, the pipeline runs automatically, outputting nicely organized frames for your videos. Then you'll have pictures you can put on coffee mugs and calendars.
+As part of this example we'll introduce you to some of the Pachyderm Dashboard's features. The Dashboard is part of the Pachyderm Enterprise Edition. Everyone gets a token for a two-week free trial of the Enterprise Edition. Talk to [sales](mailto:sales@pachyderm.io) when you're ready to upgrade to Enterprise.
+
+Pachyderm quickly processes multiple videos simultaneously through parallelization. Additionally, when videos are added, the Pachyderm pipeline runs automatically, outputting frames as .jpg files in a folder for each video. After this project you'll have pictures you can put on coffee mugs and calendars for your friends in no time :).
 
  Let's get started!
 
 ## Prerequisites
 This example assumes you have Pachyderm running locally. Check out the [Local Installation instructions](https://pachyderm.readthedocs.io/en/stable/getting_started/local_installation.html) if you haven’t istalled pachyderm. 
 
-This example also assumes you have done the [Beginner Tutorial](https://pachyderm.readthedocs.io/en/stable/getting_started/beginner_tutorial.html). You don't have to have completed it, but this guide won't explain what's going on in the level of detail that guide does.
+This example also assumes you have done the [Beginner Tutorial](https://pachyderm.readthedocs.io/en/stable/getting_started/beginner_tutorial.html). You don't have to have completed it, but this guide won't explain what's going on in the level of detail that the Beginner Tutorial does.
 
-## Step 1: Create a Pachyderm Repo
+## Step 1: Create a Pachyderm repo
 
 ``` pachctl create-repo videos
 
@@ -23,17 +25,25 @@ This example also assumes you have done the [Beginner Tutorial](https://pachyder
 pachctl list-repo
 ```
 
-## Step 2: Create a Pachyderm Pipeline
+Alternatively, you can create your repo in the Pachyderm dashboard in your browser at *localhost:300080* by 
+clicking on the *+* icon in the bottom right of the page. 
 
-Pipelines are specified with JSON. For this example, we've already created a pipeline for you. The code is here:. The full pipeline spec is here.
+Then click on *Create Repo*.
 
-When you want to create your own pipelines later, you can refer to the full :doc:`../reference/pipeline_spec` to use more advanced options. This includes building your own code into a container instead of the pre-built Docker image we'll be using here.
+Then type *videos* in the *Repo name* field and click *save*.
 
-For now, we're going to create one pipeline that takes one or more videos and outputs up to the first 1,000 frames. When a pipeline is created, Pachyderm runs your code on the data in your input repo. The pipeline runs again to process the videos for all future commits. 
 
-This first time Pachyderm runs a pipeline, it downloads the Docker image specified in the pipeline spec from the specified Docker registry (DockerHub in this case). The first run this might take a few mintues, depending on your Internet connection speed. Subsequent runs will be much faster.
+## Step 2: Create a Pachyderm pipeline
 
-Here's the pipeline spec, python code, and Dockerfile that make the magic happen for this app.
+Pipelines are specified in a JSON file. For this example, we've already created a pipeline for you. The pipeline code is [here](/frames.json). The full pipeline spec is here.
+
+When you want to create your own pipelines later, you can refer to the full :doc:`../reference/pipeline_spec` to use more advanced options. In the future you'll build your own code into your own Docker container instead of the pre-built Docker image we're using here.
+
+For now, we're going to create one pipeline that takes one or more videos and outputs up to the first 1,000 frames as images. 
+
+When a pipeline is created, Pachyderm runs your code on the data in your input repo. The pipeline runs again to process the videos for each future commits. 
+
+This first time Pachyderm runs a pipeline, it downloads the Docker image specified in the pipeline spec from the specified Docker registry (Docker Hub in this case). This first download might take a few minutes, depending on your Internet connection speed. Subsequent runs should be much faster.
 
 Below is the pipeline spec and python code we're using. Let's walk through the details.
 
@@ -60,14 +70,20 @@ Below is the pipeline spec and python code we're using. Let's walk through the d
 }
 ```
 
-This Pachyderm pipeline spec contains five sections. First is the pipeline name, *frames*. Third is the input. Here we have one "atom" input: our images repo with a '/*' glob pattern. Second is the transform that specifies the Docker image to use, *discdiver/frames:v1.32* (defaults to Docker Hub for the registry), and the entry point script *frames.py*. 
+This Pachyderm pipeline spec contains five sections. First is the pipeline name, *frames*. This name becomes the name of your pipeline output repo.
 
-The glob pattern defines how the input data can be broken up for parallel processing. '/*' means that each top level file can be processed individually, assuming you have enough workers available. This setting makes sense for videos in this example. Glob patterns are one of the most powerful features of Pachyderm. When you start creating your own pipelines, check out the :doc:`../reference/pipeline_spec`. 
+Second is the input. Here we have one "atom" input: our images repo with a '/*' glob pattern. Second is the transform that specifies the Docker image to use, *discdiver/frames:v1.32* (defaults to Docker Hub for the registry), and the entry point script *frames.py*. 
 
-The final part of the pipeline spec is "enable_stats:true", which allows you to see useful information about the pipeline
+The glob pattern defines how the input data can be broken up for parallel processing. `/*` means that each top level file can be processed individually, assuming you have enough workers available. This setting makes sense for this example. Glob patterns are a powerful Pachyderm feature. When you start creating your own pipelines, check out the :doc:`../reference/pipeline_spec`. 
 
+Third is the parallelism_spec that determines how many workers the pipeline uses.
 
-CHANGE this, this is just placeholder.
+The final part of the pipeline spec is "enable_stats:true", which allows you to see useful information about the pipeline when a job runs.
+
+The pipeline specifies that the `frames.py` Python file will be run when a commit is made. So when the pipeline is made for the first time, when data is added to the pipeline, or when a pipeline is updated such that Pachyderm is told the application code changed, frames.py will run. `frames.py` is packaged as part of the Dockerfile.
+
+The `frames.py` code is below. 
+
 ```
 # frames.py
 import os
@@ -116,14 +132,13 @@ for dirpath, dirs, files in os.walk("/pfs/videos"):
 
 ```
 
-ython code is really straight forward. We're simply walking over all the images in /pfs/images, do our edge detection and write to /pfs/out.
 
-/pfs/images_pipeline and /pfs/out are local directories that Pachyderm creates for you. All the input data for a pipeline will be found in */pfs/input_repo_name*, where *input_repo_name* is specified in your Pachyderm .json specification file. 
+*/pfs/images_pipeline* and */pfs/out* are local directories that Pachyderm creates for you. All the input data for a pipeline will be found in */pfs/input_repo_name*, where *input_repo_name* is specified in your Pachyderm .json specification file. 
 
 Your code should always write out to */pfs/out* or a subdirectory you create inside */pfs/out*. Pachyderm will automatically gather everything written to /pfs/out and version it as the pipeline's output commit.
 
 
-## Step 3: Put Data into Pachyderm
+## Step 3: Put data into Pachyderm
 
 From the command line use `put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket (e.g. s3). In this case, if you have the current repo cloned you can just upload a video file from this project folder. Or you can upload a video file of type .mp4, .flv, mkv, or 3gp. 
 
