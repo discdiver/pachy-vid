@@ -1,6 +1,6 @@
-# Example
+# Pachyderm Example
 
-## Videos to images with Pachyderm
+## Videos to images
 
 ![Screenshot](images/ss15.png)
       
@@ -155,7 +155,6 @@ for dirpath, dirs, files in os.walk("/pfs/videos"):
 Your app should always write output to */pfs/out* or a subdirectory you create inside */pfs/out*. Pachyderm will automatically gather everything written to */pfs/out* and version it in the pipeline's output commit.
 
 ## Step 3: Put data into Pachyderm
-
 From the command line use `put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket (e.g. s3). In the current project, if you have the current repo cloned you can just upload a video file from the project folder. Alternatively, you can upload your own video file of type .mp4, .flv, mkv, or 3gp. 
 
 Also specify the repo name, *videos*, the branch name, *master*, a name for the video file, (e.g. *buck_bunny.mp4*), and the path to the file, (e.g. */buck_bunny.mp4*).
