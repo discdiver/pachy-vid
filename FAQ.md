@@ -36,7 +36,7 @@ Yes, see the installation [instructions](http://docs.pachyderm.io/en/stable/gett
 
 Run `pachctl inspect-job my_job_id` and it will give you a `reason` field.
 
-### How can I delete things I don't want?
+### How can I delete Pachyderm stuff I don't need?
 Choose from the following:
 ```
 delete-repo my_repo
