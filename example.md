@@ -2,8 +2,8 @@
 
 ## Videos to image frames with Pachyderm
 
-##Insert video camera, flipped arrow, still camera and pachyderm logo
-
+[]<img src="https://raw.github.com/discdiver/pachy-vid/camera.svg?sanitize=true
+      
 In this example you'll use Pachyderm to take one or more video files and split them into individual frames using the cv2 library. Although it requires little code, this program is pretty cool. With this example running, getting individual frames from videos is a piece of cake. 
 
 Pachyderm quickly processes multiple videos simultaneously through parallelization. Additionally, when videos are added, the pipeline runs automatically, outputting nicely organized frames for your videos. Then you'll have pictures you can put on coffee mugs and calendars.
@@ -160,3 +160,5 @@ You've seen just how easy it is to set up a Pachyderm Pipeline that takes in a f
 [Pachyderm Fundamentals](http://docs.pachyderm.io/en/stable/fundamentals/getting_data_into_pachyderm.html)
 
 We're hear to help you every step of the way. Please submit any issues or questions you come across on GitHub, Slack, or email at support@pachyderm.io!
+
+Icons from FlatIcon[https://www.flaticon.com/].
