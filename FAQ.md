@@ -1,13 +1,5 @@
 # Pachyderm FAQ
 
-### What's the best way to commit large files to Pachyderm from my local machine?
-
-`export ADDRESS=<minikubeIP>:30650` instead of port-forward. 
-
-### What's the best way to commit large files from an S3 bucket?
-
-`put-file repo master -f s3://...` 
-
 ### Using Pachyderm locally with minikube, what do I do if I need to restart? 
 
 `minikube delete`, `minikube start`, `pachctl deploy local`, port forward. See suggested workflow [here]().
@@ -23,6 +15,14 @@ If it hasn't completed in a few minutes, try `export ADDRESS=<minikubeIP>:30650`
 ### Can I start processing one job before another finishes?
 
 Nope. Jobs get processed one at a time because often times the execution of one job depends on the previous job's result.
+
+### What's the best way to commit large files to Pachyderm from my local machine?
+
+`export ADDRESS=<minikubeIP>:30650` instead of port-forward. 
+
+### What's the best way to commit large files from an S3 bucket?
+
+`put-file repo master -f s3://...` 
 
 ### After uploading data to a repo that outputs data via a pipeline to a pipeline repo, the list-repo command show the size of the output repo still at 0B. Does this mean I don't have any data in the output repo?
 
@@ -64,7 +64,7 @@ Minikube is a tool that runs Kubernetes locally. Minikube creates a single-node 
 
 ### Minikube isn't cooperating when I try to start it, what should I do?
 
-minikube v.0.31.0 doesn't work well with virtualbox. Fixes are forthcoming by the Kubernetes team. For now, if using VirtualBox with minikube we recommend you install minikube v0.30.0. From [minikube](https://github.com/kubernetes/minikube/releases):
+minikube v.0.31.0 doesn't work well with virtualbox. Fixes are forthcoming by the Kubernetes team. For now, if using VirtualBox with minikube we recommend you install minikube v0.30.0. Instructions from [minikube](https://github.com/kubernetes/minikube/releases):
 
 On Mac OsX:
 
