@@ -193,5 +193,3 @@ If you want to see what else Pachyderm can do try out another example [Pachyderm
 When you're ready to upgrade to Enterprise talk to the friendly folks at [sales](mailto:sales@pachyderm.io). 
 
 The Pachyderm team is here to help you every step of the way. Please submit any issues or questions you come across on [GitHub](https://github.com/pachyderm/pachyderm), [Slack](https://pachyderm-users.slack.com), or email at support@pachyderm.io!
-
-*Icons from FlatIcon[https://www.flaticon.com/].*
