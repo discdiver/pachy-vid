@@ -6,7 +6,7 @@
       
 In this example you'll use Pachyderm to take one or more video files and split them into individual frames using the opencv library. With this example running, getting individual image frames from videos is a piece of cake. 
 
-As part of this example we'll introduce you to some of the Pachyderm Dashboard's features. The Dashboard is part of the Pachyderm Enterprise Edition. Everyone gets a token for a two-week free trial of the Enterprise Edition. Talk to [sales](mailto:sales@pachyderm.io) when you're ready to upgrade to Enterprise.
+As part of this example we'll introduce you to some of the Pachyderm Dashboard's features. The Dashboard is part of the Pachyderm Enterprise Edition. New users receive a token for a two-week free trial of the Pachyderm Enterprise Edition. 
 
 Pachyderm quickly processes multiple videos simultaneously through parallelization. Additionally, when videos are added, the Pachyderm pipeline runs automatically, outputting frames as .jpg files in a folder for each video. After this project you'll have pictures you can put on coffee mugs and calendars for your friends in no time :).
 
@@ -14,8 +14,6 @@ Pachyderm quickly processes multiple videos simultaneously through parallelizati
 
 ## Prerequisites
 This example assumes you have Pachyderm running locally. Check out the [Local Installation instructions](https://pachyderm.readthedocs.io/en/stable/getting_started/local_installation.html) if you haven’t istalled pachyderm. 
-
-This example also assumes you have done the [Beginner Tutorial](https://pachyderm.readthedocs.io/en/stable/getting_started/beginner_tutorial.html). You don't have to have completed it, but this guide won't explain what's going on in the level of detail that the Beginner Tutorial does.
 
 ## Step 1: Create a Pachyderm repo
 
@@ -148,7 +146,6 @@ for dirpath, dirs, files in os.walk("/pfs/videos"):
 
 ```
 
-
 */pfs/images_pipeline* and */pfs/out* are local directories that Pachyderm creates for you. All the input data for a pipeline will be found in */pfs/input_repo_name*, where *input_repo_name* is specified in your Pachyderm .json specification file. 
 
 Your code should always write out to */pfs/out* or a subdirectory you create inside */pfs/out*. Pachyderm will automatically gather everything written to */pfs/out* and version it in the pipeline's output commit.
@@ -179,7 +176,7 @@ See an individual image frame by getting it from your Pachyderm repo and viewing
 $ pachctl get-file images_pipeline master buck_bunny/buck_bunnyframe1.jpg | open -f -a /Applications/Preview.app
 ```
 
-Or, in the Pachyderm dashboard, you can navigate to the output files from your commit and preview or download your images. 
+Alternatively, in the Pachyderm dashboard, you can navigate to the output files from your commit and preview or download your images. 
 
 ![Screenshot](images/ss21.png)
 
@@ -188,9 +185,11 @@ There's lots to checkout in the Pachyderm dashboard, so have a look around!
 ## Step 6: Keep building!
 You've seen just how easy it is to set up a Pachyderm Pipeline that takes in a video files, manipulates them, and ouptputs new image files. 
 
-To make changes to *frames.py* or *frames.json* and quickly iterate, check out the [Pachyderm Workflow]() document.
+To make changes to *frames.py* or *frames.json* and iterate quickly, check out the [Pachyderm Workflow](/pachderm_workflow.md) document.
 
 Or if you want to see what else Pachyderm can do try out another example [Pachyderm Examples](http://docs.pachyderm.io/en/stable/examples/README.html)
+
+When you're ready to upgrade to Enterprise talk to the friendly folks at [sales](mailto:sales@pachyderm.io). 
 
 The Pachyderm team is here to help you every step of the way. Please submit any issues or questions you come across on [GitHub](), [Slack](), or email at support@pachyderm.io!
 
