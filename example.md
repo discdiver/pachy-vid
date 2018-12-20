@@ -15,7 +15,7 @@ This example assumes you have Pachyderm running locally. Check out the [Local In
 
 ## Step 1: Create a Pachyderm repo
 
-Run `pachctl create-repo videos` to create your input repo.
+Run `pachctl create-repo videos` to create your *videos* input repo.
 
 Then run `pachctl list-repo` to verify your repo was created.
 
