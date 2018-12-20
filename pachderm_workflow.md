@@ -26,7 +26,7 @@ $ export ADDRESS=192.168.99.100:30650
 7. Update your code
 8. Docker build your image with a unique tag. With _Docker-env_ set, this will build the image in minikube directly.
 8. Update your json spec to reflect the new image tag (e.g. v1.1).
-9. Run `pachctl update-pipeline -f my_pipeline_spec.json ----push-images' 
+9. Run `pachctl update-pipeline -f my_pipeline_spec.json ----push-images`
 10. Check that pipeline ran ok.
 
 Return to step 7 until you get everything working the way you want.
