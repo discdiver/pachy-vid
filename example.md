@@ -13,7 +13,7 @@ Pachyderm quickly processes multiple videos simultaneously through parallelizati
  Let's get started!
 
 ## Prerequisites
-This example assumes you have Pachyderm running locally. Check out the [Local Installation instructions](https://pachyderm.readthedocs.io/en/stable/getting_started/local_installation.html) if you haven’t istalled pachyderm. 
+This example assumes you have Pachyderm running locally. Check out the [Local Installation instructions](https://pachyderm.readthedocs.io/en/stable/getting_started/local_installation.html) if you haven’t installed pachyderm. 
 
 ## Step 1: Create a Pachyderm repo
 
@@ -73,7 +73,7 @@ Below is the pipeline spec and Python code we're using. Let's walk through the d
   },
   "transform": {
     "cmd": [ "python", "./frames.py" ],
-    "image": "discdiver/frames:v1.32"
+    "image": "discdiver/frames:v1.33"
   },
   "parallelism_spec":{
     "coefficient": 2
@@ -190,7 +190,7 @@ Alternatively, in the Pachyderm dashboard, you can navigate to the output files 
 There's lots to checkout in the Pachyderm dashboard, so have a look around!
 
 ## Step 6: Keep building!
-You've seen just how easy it is to set up a Pachyderm pipeline that takes in a video files, manipulates them, and ouptputs new image files. You've also had a quick look at the Pachyderm dashboard.
+You've seen just how easy it is to set up a Pachyderm pipeline that takes in a video files, manipulates them, and outputs new image files. You've also had a quick look at the Pachyderm dashboard.
 
 To make changes to *frames.py* or *frames.json* and iterate quickly, check out the [Pachyderm Workflow](/pachderm_workflow.md) document.
 
