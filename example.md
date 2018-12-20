@@ -17,7 +17,8 @@ This example assumes you have Pachyderm running locally. Check out the [Local In
 
 ## Step 1: Create a Pachyderm repo
 
-``` pachctl create-repo videos
+``` 
+pachctl create-repo videos
 
 # list repo
 pachctl list-repo
@@ -36,6 +37,8 @@ Then type *videos* in the *Repo name* field and click *save*.
 
 Viola! You've got a repo.
 
+![Screenshot](images/ss22.png)
+
 ## Step 2: Create a Pachyderm pipeline
 
 Pipelines are specified in a JSON file. For this example, we've created a pipeline for you. The pipeline code is [here](/frames.json). The full pipeline spec is [here](http://docs.pachyderm.io/en/latest/reference/pipeline_spec.html). 
@@ -48,9 +51,9 @@ The first time Pachyderm runs a pipeline, it downloads the Docker image specifie
 
 Pachyderm will automatically create your output pipeline and output repository based on your .JSON pipeline spec.
 
-`$ pachctl create-pipeline -f https://raw.githubusercontent.com/discdiver/pachy-vid/master/frames.json`
+`pachctl create-pipeline -f https://raw.githubusercontent.com/discdiver/pachy-vid/master/frames.json`
 
-If you have the Pachyderm dashboard open, you'll see magic happen when you create your pipeline from the command line.
+If you have the Pachyderm dashboard open, you'll see magic happen when you create your pipeline from the command line. The *images_pipeline* connects the *videos* input repo to the  *images_pipeline* output repo. 
 
 ![Screenshot](images/ss20.png)
    
@@ -153,9 +156,9 @@ Your app should always write output to */pfs/out* or a subdirectory you create i
 
 ## Step 3: Put data into Pachyderm
 
-From the command line use `put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket (e.g. s3). In the current project, if you have the current repo cloned you can just upload a video file from the project folder. Or you can upload your own video file of type .mp4, .flv, mkv, or 3gp. 
+From the command line use `put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket (e.g. s3). In the current project, if you have the current repo cloned you can just upload a video file from the project folder. Alternatively, you can upload your own video file of type .mp4, .flv, mkv, or 3gp. 
 
-Also specify the repo name "videos", the branch name "master", a name for the video file, e.g. "buck_bunny.mp4", and the path to the file.
+Also specify the repo name, *videos*, the branch name, *master*, a name for the video file, (e.g. *buck_bunny.mp4*), and the path to the file, (e.g. */buck_bunny.mp4*).
 
 ``` pachctl put-file videos master buck_bunny.mp4 -f /buck_bunny.mp4 ```
 
@@ -167,15 +170,18 @@ See the commit with
 and see the files committed with  
 ```pachctl list-file videos master```
 
-In the Pachyderm dashboard you can see the details of the commit. You can also interactively visualize your pipeline and drill down into your jobs, datums, and processed and unprocessed files.
+In the Pachyderm dashboard you can see the details of the commit. You can also interactively visualize your pipeline and drill down into your jobs, datums, and processed and unprocessed files. 
 
 ![Screenshot](images/ss7.png)
+
+Data lineage, or provenance, is a core feature of Pachyderm. The dashboard makes it easy to see every step in the processes that produced the results.
 
 ## Step 5: View your beautiful images
 See an individual image frame by getting it from your Pachyderm repo and viewing with this command on a Mac:
 ```
-$ pachctl get-file images_pipeline master buck_bunny/buck_bunnyframe1.jpg | open -f -a /Applications/Preview.app
+$ pachctl get-file images_pipeline master buck_bunny/buck_bunnyframe100.jpg | open -f -a /Applications/Preview.app
 ```
+![Screenshot](images/ss23.png)
 
 Alternatively, in the Pachyderm dashboard, you can navigate to the output files from your commit and preview or download your images. 
 
@@ -188,7 +194,7 @@ You've seen just how easy it is to set up a Pachyderm pipeline that takes in a v
 
 To make changes to *frames.py* or *frames.json* and iterate quickly, check out the [Pachyderm Workflow](/pachderm_workflow.md) document.
 
-If you want to see what else Pachyderm can do try out another example [Pachyderm Examples](http://docs.pachyderm.io/en/stable/examples/README.html).
+If you want to see what else Pachyderm can do, try out another example from the [Pachyderm Examples](http://docs.pachyderm.io/en/stable/examples/README.html).
 
 When you're ready to upgrade to Enterprise talk to the friendly folks at [sales](mailto:sales@pachyderm.io). 
 
