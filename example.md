@@ -2,7 +2,7 @@
 
 ## Videos to image frames with Pachyderm
 
-[]<img src="https://raw.github.com/discdiver/pachy-vid/camera.svg?sanitize=true
+<img src="./camera.svg">
       
 In this example you'll use Pachyderm to take one or more video files and split them into individual frames using the cv2 library. Although it requires little code, this program is pretty cool. With this example running, getting individual frames from videos is a piece of cake. 
 
