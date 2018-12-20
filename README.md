@@ -1,4 +1,4 @@
-# Pachyderm Video to Image Frames Project
+# Pachyderm Video to Image Project
 
 ![Screenshot](images/ssread.png)
 
