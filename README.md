@@ -1,4 +1,7 @@
 # Pachyderm video to image frames project
+
+![Screenshot](images/ssread.png)
+
 This repo contains a Pachyderm demonstration project. It shows how a user can easily break a video file into image frames using [Pachyderm](http://pachyderm.io/) and the [opencv library](https://docs.opencv.org/3.4/dd/d43/tutorial_py_video_display.html). 
 
 This repo contains the following files of consequence:
