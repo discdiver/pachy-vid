@@ -10,10 +10,10 @@
   },
   "transform": {
     "cmd": [ "python", "./frames.py" ],
-    "image": "discdiver/frames:v1.32"
+    "image": "discdiver/frames:v1.33"
+  },
+  "parallelism_spec":{
+    "coefficient": 2
   },
   "enable_stats": true,
-  "parallelism_spec":{
-    "constant": 3
-  }
 }
