@@ -73,10 +73,10 @@ Below is the pipeline spec and Python code we're using. Let's walk through the d
     "cmd": [ "python", "./frames.py" ],
     "image": "discdiver/frames:v1.33"
   },
-  "parallelism_spec":{
+  "parallelism_spec": {
     "coefficient": 2
   },
-  "enable_stats": true,
+  "enable_stats": true
 }
 ```
 
@@ -102,6 +102,8 @@ The `frames.py` code is below.
 
 ```
 # frames.py
+# code for video to image frames pachyderm example
+
 import os
 import cv2
 import numpy as np
@@ -111,10 +113,9 @@ top = os.getcwd()
 def make_images(video, max_images=1000):
     '''
     Outputs .jpg images from a video file
-
     Args:
         video (str):     File name of video
-        max_images (int): Maximumum number of images to output per video.
+        max_images (int): Maximum number of images to output per video.
     Returns:
         none
     '''
@@ -125,9 +126,9 @@ def make_images(video, max_images=1000):
     vidcap = cv2.VideoCapture(video)
     vid_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    count = 0             # counter to stay under max images
-    #print("/pfs/out/{}".format(file_no_ext))
-    os.mkdir("/pfs/out/{}".format(file_no_ext))  #cv2 requires directory to exist
+    count = 0                                    # counter to stay under max images
+
+    os.mkdir("/pfs/out/{}".format(file_no_ext))  # cv2 requires directory to exist
 
     while count < max_images and count < vid_length:
         try:
