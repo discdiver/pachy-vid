@@ -9,7 +9,8 @@ These instructions assume you are running Pachyderm on minikube, but most instru
 2. Deploy Pachyderm with `pachctl deploy local`
 3. Check Pachyderm pods all running with `kubectl get pods`. Wait for pods to show running.
 4. Port forward with your minikube ip address
-```$ minikube ip
+```
+$ minikube ip
 192.168.99.100
 $ export ADDRESS=192.168.99.100:30650
 ```
