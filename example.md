@@ -81,7 +81,7 @@ This Pachyderm pipeline spec contains five sections. First is the pipeline name,
 
 Second is the input. Here we have one "atom" input: the images repo name with a '/*' glob pattern. The glob pattern defines how the input data can be broken up for parallel processing. `/*` means that each top level file can be processed individually, assuming you have enough workers available. Glob patterns are a powerful Pachyderm feature. 
 
-Third is the transform that specifies the Docker image to use, *discdiver/frames:v1.33* (defaults to Docker Hub for the registry). Th transform also specifies the entrypoint script *frames.py*. 
+Third is the transform that specifies the Docker image to use, *discdiver/frames:v1.33* (defaults to Docker Hub for the registry). The transform also specifies the entrypoint script *frames.py*. 
 
 Fourth is the *parallelism_spec* that determines how many workers the pipeline uses.
 
