@@ -4,4 +4,4 @@ FROM jjanzic/docker-python3-opencv
 COPY . /
 
 # Run Python script at start
-CMD ["python", "./frames.py"]
+# CMD ["python", "./frames.py"]
