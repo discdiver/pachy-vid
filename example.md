@@ -67,11 +67,17 @@ Below is the pipeline spec and Python code we're using. Let's walk through the d
     }
   },
   "transform": {
-    "cmd": [ "python", "./frames.py" ],
-    "image": "discdiver/frames:v1.33"
+    "cmd": [
+      "python",
+      "./frames.py",
+      "/pfs/videos",
+	"/pfs/out",
+      "200"
+     ],
+    "image": "discdiver/frames:v1.39"
   },
   "parallelism_spec": {
-    "coefficient": 2
+    "constant": 2
   },
   "enable_stats": true
 }
@@ -81,7 +87,7 @@ This Pachyderm pipeline spec contains five sections. First is the pipeline name,
 
 Second is the input. Here we have one "atom" input: the images repo name with a '/*' glob pattern. The glob pattern defines how the input data can be broken up for parallel processing. `/*` means that each top level file can be processed individually, assuming you have enough workers available. Glob patterns are a powerful Pachyderm feature. 
 
-Third is the transform that specifies the Docker image to use, *discdiver/frames:v1.33* (defaults to Docker Hub for the registry). The transform also specifies the entrypoint script *frames.py*. 
+Third is the transform that specifies the Docker image to use, *discdiver/frames:v1.39* (defaults to Docker Hub for the registry). The transform also specifies the entrypoint script *frames.py*. 
 
 Fourth is the *parallelism_spec* that determines how many workers the pipeline uses.
 
@@ -102,46 +108,59 @@ The `frames.py` code is below.
 import os
 import cv2
 import numpy as np
+import argparse
+
+# command line arguments
+parser = argparse.ArgumentParser(description='Train a model for iris classification.')
+parser.add_argument('indir', type=str, help='Input directory containing the videos')
+parser.add_argument('outdir', type=str, help='Output directory for image frames')
+parser.add_argument('max_images', type=int, help='Number of frames to output per video')
+args = parser.parse_args()
 
 top = os.getcwd()
+print(top)
 
-def make_images(video, max_images=1000):
+def make_images(video, outdir="/pfs/out", max_images=1000):
     '''
     Outputs .jpg images from a video file
+
     Args:
-        video (str):     File name of video
-        max_images (int): Maximum number of images to output per video.
+        video (str):                          File name of video
+        outdir="/pfs/images_pipeline" (str):  Output directory
+        max_images=1000 (int):                Max number images to output per video
     Returns:
         none
     '''
 
-    file_name = os.path.split(video)[1]
-    file_no_ext = file_name.split(".")[0]
+    file_name_w_ext = os.path.split(video)[1]
+    file_name = file_name_w_ext.split(".")[0]  # files with . in name could trip
 
     vidcap = cv2.VideoCapture(video)
     vid_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    count = 0                                    # counter to stay under max images
+    count = 0                                 # counter to stay under max images
+    output_dir = "{outdir}/{filename}".format(outdir=outdir, filename=file_name)
 
-    os.mkdir("/pfs/out/{}".format(file_no_ext))  # cv2 requires directory to exist
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)                  # cv2 requires directory to exist
 
     while count < max_images and count < vid_length:
         try:
             success, image = vidcap.read()
-            cv2.imwrite(os.path.join("/pfs/out/{}".format(file_no_ext), file_no_ext + "frame{:d}.jpg".format(count)), image)
+            cv2.imwrite(
+                os.path.join(
+                    "/{outdir}/{filename}".format(outdir=outdir, filename=file_name),
+                    file_name + "frame{:d}.jpg".format(count)),
+                    image)
         except Exception as e:
             print("Oops, there was an exception: {}".format(e))
 
         count += 1
 
-ok_file_type = {'mp4', '3gp', 'flv', 'mkv'}
-
-# walk /pfs/videos and call make_images on every file found
-for dirpath, dirs, files in os.walk("/pfs/videos"):
+# walk /pfs/<input_repo> and call make_images on every file
+for dirpath, dirs, files in os.walk(args.indir):
     for file in files:
-        if file[-3:] in ok_file_type:
-            make_images(os.path.join(dirpath, file))
-
+        make_images(os.path.join(dirpath, file), args.outdir, args.max_images)
 ```
 
 */pfs/images_pipeline* and */pfs/out* are local directories that Pachyderm creates for you. All the input data for a pipeline will be found in */pfs/input_repo_name*, where *input_repo_name* is specified in your Pachyderm .json specification file. 
