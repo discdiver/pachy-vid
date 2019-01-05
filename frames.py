@@ -10,7 +10,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Train a model for iris classification.')
 parser.add_argument('indir', type=str, help='Input directory containing the videos')
 parser.add_argument('outdir', type=str, help='Output directory for image frames')
-# parser.add_argument('max_images', type=int, help='Number of frames to output per video')
+parser.add_argument('max_images', type=int, help='Number of frames to output per video')
 args = parser.parse_args()
 
 top = os.getcwd()
@@ -59,4 +59,4 @@ ok_file_type = {'mp4', '3gp', 'flv', 'mkv'}
 for dirpath, dirs, files in os.walk(args.indir):
     for file in files:
         if file[-3:] in ok_file_type:
-            make_images(os.path.join(dirpath, file), args.outdir)
+            make_images(os.path.join(dirpath, file), args.outdir, args.max_images)

@@ -1,6 +1,6 @@
 {
   "pipeline": {
-    "name": "im_pipeline"
+    "name": "image_pipeline"
   },
   "input": {
     "atom": {
@@ -13,9 +13,10 @@
       "python",
       "./frames.py",
       "/pfs/videos",
-	    "/pfs/out"
+	    "/pfs/out",
+      "200"
      ],
-    "image": "discdiver/frames:v1.38"
+    "image": "discdiver/frames:v1.39"
   },
   "parallelism_spec": {
     "constant": 2
