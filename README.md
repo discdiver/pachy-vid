@@ -24,7 +24,7 @@ In this readme I'll first explain how to run the code and then explain the desig
 5. You can retrieve the image files from their subfolders. Alternatively, in the Pachyderm dashboard you'll see the video files come in and the .jpg image files go into their respective folders. You can click on the images and view them or download them.
 
 ### Notes
-1. This program outputs a maximum of 1,000 frames per video. If a video has less than 1,000 frames, then all frames in the video are output. 
+1. This program outputs a maximum of frames per video that can be set by the user in frames.json. If a video has less than the number of frames, then all frames in the video are output. 
 2. You can upload multiple videos for simultaneous processing.
 3. Each time you upload a video the Pachyderm pipeline will be triggered to run automatically.
 
@@ -37,14 +37,16 @@ I decided to output each video's frames to a labeled directory to demonstrate th
 The final Dockerfile pulls from a Python opencv file with clear packages. This design keeps the Dockerfile clean.
 
 ### frames.py
-This is the main application file. I created a *make_images()* function to turn videos into images. The parameter *max_images* defaults to 1,000, but that can be easily altered in the code if a different number is desired.
+This is the main application file. I created a *make_images()* function to turn videos into images. The parameter *max_images* easily altered in the .json file if a different number is desired.
 
 The Function finds the total number of frames in video. The read and write functions are wrapped in a try-except block. Each video's frames, up to *max_images* are written to a file in a sub-directory with the name of the video. Each image file is identified by the video's prefix and the frame number. 
 
 This script walks the file system to find files that match the specified video formats and calls *make_images()* for each file.
 
 ### frames.json
-This is the Pachyderm pipeline specification. It pulls the Docker image from my Docker Hub registry. The *parallelism_spec* is set to *coefficient: 2* to use 2 workers per node and the *glob* pattern specifies Pachyderm should run each top level file or directory in the input repo as its own datum. This arrangement should make for efficient parallel processing of multiple video files.
+This is the Pachyderm pipeline specification. It pulls the Docker image from my Docker Hub registry. The *parallelism_spec* is set to *constant: 2* to use 2 workers and the *glob* pattern specifies Pachyderm should run each top level file or directory in the input repo as its own datum. This arrangement should make for efficient parallel processing of multiple video files.
+
+The transform command contains the input repository, output repository, and max_images.
 
 ### example.md
 This file is a walkthrough of the project for someone new to Pachyderm. It exposes the tutorial user to the Pachyderm dashboard and aims to provide helpful, clear explanations. 
