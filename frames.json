@@ -1,6 +1,6 @@
 {
   "pipeline": {
-    "name": "image_pipeline"
+    "name": "images_pipeline"
   },
   "input": {
     "atom": {

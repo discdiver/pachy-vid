@@ -53,10 +53,7 @@ def make_images(video, outdir="/pfs/out", max_images=1000):
 
         count += 1
 
-ok_file_type = {'mp4', '3gp', 'flv', 'mkv'}
-
 # walk /pfs/<input_repo> and call make_images on every file
 for dirpath, dirs, files in os.walk(args.indir):
     for file in files:
-        if file[-3:] in ok_file_type:
-            make_images(os.path.join(dirpath, file), args.outdir, args.max_images)
+        make_images(os.path.join(dirpath, file), args.outdir, args.max_images)
