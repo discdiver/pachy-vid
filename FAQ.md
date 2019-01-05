@@ -1,16 +1,8 @@
 # Pachyderm FAQ
 
-### What's the best way to commit large files to Pachyderm from my local machine?
+### Using Pachyderm locally with minikube, what do I do if I need to restart? 
 
-`export ADDRESS=<minikubeIP>:30650` instead of port-forward. 
-
-### What's the best way to commit large files from an S3 bucket?
-
-`put-file repo master -f s3://...` 
-
-### Using Pachyderm locally with minikube, what do I do if my vm disconnects? 
-
-minikube delete, minikube start, pachctl deploy local, port forward. See suggested workflow [here]().
+`minikube delete`, `minikube start`, `pachctl deploy local`, port forward. See suggested workflow [here]().
 
 ### How long does Pachyderm take to to get my k8s pods running?
 
@@ -24,9 +16,17 @@ If it hasn't completed in a few minutes, try `export ADDRESS=<minikubeIP>:30650`
 
 Nope. Jobs get processed one at a time because often times the execution of one job depends on the previous job's result.
 
-### After uploading data to a repo that outouts data via a pipeline to a pipeline repo, why does the list-repo command show the size of the pipeline repo still at 0B? 
+### What's the best way to commit large files to Pachyderm from my local machine?
 
-Seems like a possible bug. Use pachctl list-commit my_output_repo to see if any new files were output.
+`export ADDRESS=<minikubeIP>:30650` instead of port-forward. 
+
+### What's the best way to commit large files from an S3 bucket?
+
+`put-file repo master -f s3://...` 
+
+### After uploading data to a repo that outputs data via a pipeline to a pipeline repo, the list-repo command show the size of the output repo still at 0B. Does this mean I don't have any data in the output repo?
+
+Not necessarily. Use `pachctl list-commit my_output_repo_name` to see if any files were output.
 
 ### Can I use Pachyderm locally with a Windows machine?
 
@@ -34,8 +34,19 @@ Yes, see the installation [instructions](http://docs.pachyderm.io/en/stable/gett
 
 ### How can I figure out why my job failed?
 
-Run `inspect-job my_job_name` and it will give you a `reason` field.
+Run `pachctl inspect-job my_job_id` and it will give you a `reason` field.
 
+### How can I delete Pachyderm stuff I don't need?
+Choose from the following:
+```
+delete-repo my_repo
+delete-commit my_commit
+delete-branch my_branch
+delete-file my_file
+delete-job my_job
+delete-pipeline my_pipeline
+delete-all 
+```
 
 ## Kubernetes-related questions
 
@@ -47,13 +58,13 @@ Run `inspect-job my_job_name` and it will give you a `reason` field.
 
 [kubctl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) is Kubernetes's command-line tool. If you're using it with Pachyderm you'll mostly use it to inspect cluster resources.
 
-### What is minikube?
+### What's minikube?
 
 Minikube is a tool that runs Kubernetes locally. Minikube creates a single-node Kubernetes cluster inside a VM.
 
 ### Minikube isn't cooperating when I try to start it, what should I do?
 
-minikube v.0.31.0 doesn't work well with virtualbox. Fixes are forthcoming by the Kubernetes team. For now, if using VirtualBox we recommend you install minikube v0.30.0. From [minikube](https://github.com/kubernetes/minikube/releases): 
+minikube v.0.31.0 doesn't work well with virtualbox. Fixes are forthcoming by the Kubernetes team. For now, if using VirtualBox with minikube we recommend you install minikube v0.30.0. Instructions from [minikube](https://github.com/kubernetes/minikube/releases):
 
 On Mac OsX:
 
@@ -65,4 +76,4 @@ On Linux:
 
 ### Can I use [microk8s](https://microk8s.io/) instead of minikube? 
 
-Pachyderm users have reported deploying Pachyderm with microk8s. Look for more information from Pachyderm on how to set microk8s up soon. Sign up for our mailing list to hear about that and other new features.
+Pachyderm users have reported successfully deploying Pachyderm with microk8s. Look for more information from Pachyderm on how to set microk8s up soon. Sign up for our mailing list to hear about that and other new features as they are released.

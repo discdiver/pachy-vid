@@ -1,4 +1,7 @@
-# Pachyderm video to image frames project
+# Pachyderm Video to Image Project
+
+![Screenshot](images/ssread.png)
+
 This repo contains a Pachyderm demonstration project. It shows how a user can easily break a video file into image frames using [Pachyderm](http://pachyderm.io/) and the [opencv library](https://docs.opencv.org/3.4/dd/d43/tutorial_py_video_display.html). 
 
 This repo contains the following files of consequence:
@@ -42,6 +45,9 @@ This script walks the file system to find files that match the specified video f
 
 ### frames.json
 This is the Pachyderm pipeline specification. It pulls the Docker image from my Docker Hub registry. The *parallelism_spec* is set to *coefficient: 2* to use 2 workers per node and the *glob* pattern specifies Pachyderm should run each top level file or directory in the input repo as its own datum. This arrangement should make for efficient parallel processing of multiple video files.
+
+### example.md
+This file is a walkthrough of the project for someone new to Pachyderm. It exposes the tutorial user to the Pachyderm dashboard and aims to provide helpful, clear explanations. 
 
 ### FAQ.md
 The FAQ file is a work in progress. I thought I'd share some Pachyderm questions that came to mind during this project that might be useful for new users. I also included some questions from the Users Slack channel that look like they could be helpful for folks.
