@@ -58,9 +58,13 @@ delete-all
 
 [kubctl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) is Kubernetes's command-line tool. If you're using it with Pachyderm you'll mostly use it to inspect cluster resources.
 
+### How should I use Pachyderm locally on a Mac?
+
+We recommend you install [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop). See the [Pachyderm install docs](https://pachyderm.readthedocs.io/en/stable/getting_started/local_installation.html) for more info.
+
 ### What's minikube?
 
-Minikube is a tool that runs Kubernetes locally. Minikube creates a single-node Kubernetes cluster inside a VM.
+Minikube is a tool that runs Kubernetes locally. Minikube creates a single-node Kubernetes cluster inside a VM. It's slower and requires more configuration than Docker Desktop or MicroK8s, so it isn't our recommended solution for using Pachyderm locally.
 
 ### Minikube isn't cooperating when I try to start it, what should I do?
 
@@ -76,4 +80,4 @@ On Linux:
 
 ### Can I use [microk8s](https://microk8s.io/) instead of minikube? 
 
-Pachyderm users have reported successfully deploying Pachyderm with microk8s. Look for more information from Pachyderm on how to set microk8s up soon. Sign up for our mailing list to hear about that and other new features as they are released.
+Pachyderm users have reported successfully deploying Pachyderm with microk8s on Ubuntu machines. On a Mac, it's easier to use Docker Desktop.
