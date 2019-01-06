@@ -6,7 +6,7 @@
 
 ### How long does Pachyderm take to to get my k8s pods running?
 
-It can take five minutes or so.
+It can take five minutes or so with minikube, and is generally much faster with Docker Desktop.
 
 ### How long does port forwarding take?
 
@@ -35,6 +35,10 @@ Yes, see the installation [instructions](http://docs.pachyderm.io/en/stable/gett
 ### How can I figure out why my job failed?
 
 Run `pachctl inspect-job my_job_id` and it will give you a `reason` field.
+
+### How can I save pipeline definitions created in a supported Pachyderm language client into a JSON file?
+
+`extract-pipeline`
 
 ### How can I delete Pachyderm stuff I don't need?
 Choose from the following:
@@ -81,3 +85,6 @@ On Linux:
 ### Can I use [microk8s](https://microk8s.io/) instead of minikube? 
 
 Pachyderm users have reported successfully deploying Pachyderm with microk8s on Ubuntu machines. On a Mac, it's easier to use Docker Desktop.
+
+
+Answers compiled from [Slack](https://pachyderm-users.slack.com/), [docs](http://docs.pachyderm.io/en/latest/), and experience.
