@@ -14,9 +14,9 @@
       "./frames.py",
       "/pfs/videos",
 	    "/pfs/out",
-      "200"
+      "1000"
      ],
-    "image": "discdiver/frames:v1.39"
+    "image": "discdiver/frames:v1.42"
   },
   "parallelism_spec": {
     "constant": 2

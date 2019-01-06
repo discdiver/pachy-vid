@@ -7,14 +7,11 @@ import numpy as np
 import argparse
 
 # command line arguments
-parser = argparse.ArgumentParser(description='Train a model for iris classification.')
-parser.add_argument('indir', type=str, help='Input directory containing the videos')
-parser.add_argument('outdir', type=str, help='Output directory for image frames')
-parser.add_argument('max_images', type=int, help='Number of frames to output per video')
+parser = argparse.ArgumentParser(description='Get params for video to images')
+parser.add_argument('indir', type=str, help='Input directory containing videos')
+parser.add_argument('outdir', type=str, help='Output directory for images')
+parser.add_argument('max_images', type=int, help='Max frames to output per video')
 args = parser.parse_args()
-
-top = os.getcwd()
-print(top)
 
 def make_images(video, outdir="/pfs/out", max_images=1000):
     '''
@@ -23,7 +20,7 @@ def make_images(video, outdir="/pfs/out", max_images=1000):
     Args:
         video (str):                          File name of video
         outdir="/pfs/images_pipeline" (str):  Output directory
-        max_images=1000 (int):                Max number images to output per video
+        max_images=1000 (int):                Max frames to output per video
     Returns:
         none
     '''
@@ -35,7 +32,7 @@ def make_images(video, outdir="/pfs/out", max_images=1000):
     vid_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     count = 0                                 # counter to stay under max images
-    output_dir = "{outdir}/{filename}".format(outdir=outdir, filename=file_name)
+    output_dir = f"{outdir}/{file_name}"
 
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)                  # cv2 requires directory to exist
@@ -45,9 +42,10 @@ def make_images(video, outdir="/pfs/out", max_images=1000):
             success, image = vidcap.read()
             cv2.imwrite(
                 os.path.join(
-                    "/{outdir}/{filename}".format(outdir=outdir, filename=file_name),
+                    output_dir,
                     file_name + "frame{:d}.jpg".format(count)),
-                    image)
+                    image
+                )
         except Exception as e:
             print("Oops, there was an exception: {}".format(e))
 
