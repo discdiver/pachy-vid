@@ -26,7 +26,7 @@ Nope. Jobs get processed one at a time because often times the execution of one 
 
 ### After uploading data to a repo that outputs data via a pipeline to a pipeline repo, the list-repo command show the size of the output repo still at 0B. Does this mean I don't have any data in the output repo?
 
-Not necessarily. Use `pachctl list-commit my_output_repo_name` to see if any files were output.
+Not necessarily. This is a bug and a fix is in the works. Use `pachctl list-commit my_output_repo_name` to see if any files were output.
 
 ### Can I use Pachyderm locally with a Windows machine?
 
@@ -40,6 +40,10 @@ Run `pachctl inspect-job my_job_id` and it will give you a `reason` field.
 
 `extract-pipeline`
 
+## For a machine learning workflow, if I want to outpout both transformed data (e.g. images) and hyperparameters learned during training, how should I set that up? 
+
+Output the images and hyperparameters into two different directories in the same output repo. Matching results/configs are stored in the same commit, so the process is easy to reason about. Then have a downstream pipeline use a glob pattern such as `/config/*` to only consume the hyperparameters and not the other output files.
+
 ### How can I delete Pachyderm stuff I don't need?
 Choose from the following:
 ```
@@ -51,6 +55,7 @@ delete-job my_job
 delete-pipeline my_pipeline
 delete-all 
 ```
+
 
 ## Kubernetes-related questions
 
