@@ -44,6 +44,10 @@ Run `pachctl inspect-job my_job_id` and it will give you a `reason` field.
 
 Output the images and hyperparameters into two different directories in the same output repo. Matching results/configs are stored in the same commit, so the process is easy to reason about. Then have a downstream pipeline use a glob pattern such as `/config/*` to only consume the hyperparameters and not the other output files.
 
+### How can I make pachd request more memory?
+
+`--pachd-memory-request`
+
 ### How should I back up my Pachyderm stuff?
 
 `pachctl extract` It can back up the following, if you include your object store:  objects, tags, repos, input commits, input branches, and pipelines. Any output data is recomputed after `pachctl restore`.  It restores the full commit structure of input repos, but in only restores the head commit of output branches. It doesn’t yet backup the enterprise key or access controls (Jan 2019).  We hope to address that in a future release. 
