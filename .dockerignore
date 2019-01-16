@@ -1,12 +1,7 @@
-.git
-.ipynb_checkpoints/*
-.ipynb
+.git*
+.ipynb_checkpoints
 .DS_Store
-.gitignore
 .md
-.jpg
-.mp4
-.3gp
-.flv
-.mkv
-images/*
+images
+sample_vids
+.zip
