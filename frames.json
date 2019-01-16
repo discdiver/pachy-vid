@@ -16,7 +16,7 @@
 	    "/pfs/out",
       "1000"
      ],
-    "image": "discdiver/frames:v1.42"
+    "image": "discdiver/frames:v1.43"
   },
   "parallelism_spec": {
     "constant": 2
