@@ -32,6 +32,14 @@ Not necessarily. This is a bug and a fix is in the works. Use `pachctl list-comm
 
 Yes, see the installation [instructions](http://docs.pachyderm.io/en/stable/getting_started/local_installation.html).
 
+### How can I upload a folder of files to an input repo?
+
+`pachctl put-file my_repo my_branch -r -f local_path_to_my_folder`
+
+### How can I make Pachyderm reprocess the data in a pipeline input repo when I update my pipeline spec?
+
+`pachctl update-pipeline -f my_pipeline_spec.json --reprocess`
+
 ### How can I figure out why my job failed?
 
 Run `pachctl inspect-job my_job_id` and it will give you a `reason` field.
@@ -52,6 +60,10 @@ Output the images and hyperparameters into two different directories in the same
 
 `pachctl extract` It can back up the following, if you include your object store:  objects, tags, repos, input commits, input branches, and pipelines. Any output data is recomputed after `pachctl restore`.  It restores the full commit structure of input repos, but in only restores the head commit of output branches. It doesn’t yet backup the enterprise key or access controls (Jan 2019).  We hope to address that in a future release. 
 
+### When should I shard pachd?
+By 200 pipelines you'll probably want to shard pachd.
+
+
 ### How can I delete Pachyderm stuff I don't need?
 Choose from the following:
 ```
@@ -63,6 +75,7 @@ delete-job my_job
 delete-pipeline my_pipeline
 delete-all 
 ```
+
 
 
 ## Kubernetes-related questions
