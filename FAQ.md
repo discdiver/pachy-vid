@@ -32,6 +32,14 @@ Not necessarily. This is a bug and a fix is in the works. Use `pachctl list-comm
 
 Yes, see the installation [instructions](http://docs.pachyderm.io/en/stable/getting_started/local_installation.html).
 
+### How can I upload a folder of files to an input repo?
+
+`pachctl put-file my_repo my_branch -r -f local_path_to_my_folder`
+
+### How can I make Pachyderm reprocess the data in a pipeline input repo when I update my pipeline spec?
+
+`pachctl update-pipeline -f my_pipeline_spec.json --reprocess`
+
 ### How can I figure out why my job failed?
 
 Run `pachctl inspect-job my_job_id` and it will give you a `reason` field.
