@@ -52,6 +52,10 @@ Output the images and hyperparameters into two different directories in the same
 
 `pachctl extract` It can back up the following, if you include your object store:  objects, tags, repos, input commits, input branches, and pipelines. Any output data is recomputed after `pachctl restore`.  It restores the full commit structure of input repos, but in only restores the head commit of output branches. It doesn’t yet backup the enterprise key or access controls (Jan 2019).  We hope to address that in a future release. 
 
+### When should I shard pachd?
+By 200 pipelines you'll probably want to shard pachd.
+
+
 ### How can I delete Pachyderm stuff I don't need?
 Choose from the following:
 ```
@@ -63,6 +67,7 @@ delete-job my_job
 delete-pipeline my_pipeline
 delete-all 
 ```
+
 
 
 ## Kubernetes-related questions
