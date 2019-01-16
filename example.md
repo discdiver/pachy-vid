@@ -74,7 +74,7 @@ Below is the pipeline spec and Python code we're using. Let's walk through the d
       "/pfs/out",
       "1000"
      ],
-    "image": "discdiver/frames:v1.40"
+    "image": "discdiver/frames:v1.43"
   },
   "parallelism_spec": {
     "constant": 2
@@ -120,7 +120,6 @@ args = parser.parse_args()
 def make_images(video, outdir="/pfs/out", max_images=1000):
     '''
     Outputs .jpg images from a video file
-
     Args:
         video (str):                          File name of video
         outdir="/pfs/images_pipeline" (str):  Output directory
@@ -130,7 +129,9 @@ def make_images(video, outdir="/pfs/out", max_images=1000):
     '''
 
     file_name_w_ext = os.path.split(video)[1]
-    file_name = file_name_w_ext.split(".")[0]  # files with . in name could trip
+    print(file_name_w_ext)
+    file_name = file_name_w_ext[:file_name_w_ext.rfind('.')]
+    print(file_name)
 
     vidcap = cv2.VideoCapture(video)
     vid_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -146,8 +147,7 @@ def make_images(video, outdir="/pfs/out", max_images=1000):
             success, image = vidcap.read()
             cv2.imwrite(
                 os.path.join(
-                    output_dir,
-                    file_name + "frame{:d}.jpg".format(count)),
+                    output_dir, file_name + "frame{:d}.jpg".format(count)),
                     image
                 )
         except Exception as e:
@@ -155,10 +155,20 @@ def make_images(video, outdir="/pfs/out", max_images=1000):
 
         count += 1
 
-# walk /pfs/<input_repo> and call make_images on every file
+ok_file_type = {'mp4', '3gp', 'flv', 'mkv', 'mov', 'webm', 'vob', 'ogv', 'ogg',
+                'gif', 'gifv', 'mng', 'avi', 'mts', 'm2ts', 'qt', 'wmv', 'yuv',
+                'rm', 'rmvb', 'asf', 'm4p', 'm4v', 'mpg', 'mp2', 'mpeg', 'mpe',
+                'mpv', 'm2v', 'm4v', '.svi', '3gp', '.3g2', '.mxf', 'roq',
+                '.nsv','f4v', 'f4p', 'f4a', 'f4b'}
+
+# walk indir and call make_images on each file if file type in ok_file_type
 for dirpath, dirs, files in os.walk(args.indir):
     for file in files:
-        make_images(os.path.join(dirpath, file), args.outdir, args.max_images)
+        if (file[-3:].lower() in ok_file_type or
+            file[-4:].lower() in ok_file_type or
+            file[-2:].lower() in ok_file_type):
+
+            make_images(os.path.join(dirpath, file), args.outdir, args.max_images)
 ```
 
 */pfs/images_pipeline* and */pfs/out* are local directories that Pachyderm creates for you. All the input data for a pipeline will be found in */pfs/input_repo_name*, where *input_repo_name* is specified in your Pachyderm .json specification file. 
@@ -168,9 +178,9 @@ Your app should always write output to */pfs/out* or a subdirectory you create i
 ## Step 3: Put data into Pachyderm
 From the command line use `put-file` along with the `-f` flag to denote a local file, a URL, or an object storage bucket (e.g. s3). In the current project, if you have the current repo cloned you can just upload a video file from the project folder. Alternatively, you can upload your own video file of type .mp4, .flv, mkv, or 3gp. 
 
-Also specify the repo name, *videos*, the branch name, *master*, a name for the video file, (e.g. *buck_bunny.mp4*), and the path to the file, (e.g. */buck_bunny.mp4*).
+Also specify the repo name, *videos*, the branch name, *master*, a name for the video file, (e.g. *buck_bunny.mp4*), and the path to the file, (e.g. *https://raw.githubusercontent.com/discdiver/pachy-vid/master/sample_vids/vid1.mp4*).
 
-``` pachctl put-file videos master buck_bunny.mp4 -f /buck_bunny.mp4 ```
+``` pachctl put-file videos master buck_bunny.mp4 -f https://raw.githubusercontent.com/discdiver/pachy-vid/master/sample_vids/vid1.mp4 ```
 
 When you add a new file to Pachyderm it automatically runs your pipeline and makes a commit of your data. 
 
