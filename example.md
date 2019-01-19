@@ -42,7 +42,7 @@ We're going to create a single pipeline that takes one or more videos and output
 
 When a pipeline is created, Pachyderm runs your code on the data in your input repo. In this case, your data is your videos. The pipeline runs again to process new videos each time they are added to your input repo. 
 
-The first time Pachyderm runs a pipeline, it downloads the Docker image specified in the pipeline spec from the specified Docker registry (Docker Hub in this case). This first download might take a few minutes, depending on your Internet connection speed. Subsequent runs with the same image should be faster.
+The first time Pachyderm runs a pipeline, it downloads the Docker image specified in the pipeline spec from the specified Docker registry (Docker Hub in this case - the default). This first download might take a few minutes, depending on your internet speed. Subsequent runs with the same image should be faster.
 
 Pachyderm will automatically create your output pipeline and output repository based on your JSON pipeline spec. Run the following code to create the pipeline.
 
@@ -85,7 +85,7 @@ Below is the pipeline spec and Python code we're using. Let's walk through the d
 
 This Pachyderm pipeline spec contains five sections. First is the pipeline name, *frames*. This name becomes the name of your pipeline output repo.
 
-Second is the input. Here we have one "atom" input: the images repo name with a '/*' glob pattern. The glob pattern defines how the input data can be broken up for parallel processing. `/*` means that each top level file can be processed individually, assuming you have enough workers available. Glob patterns are a powerful Pachyderm feature. 
+Second is the input. Here we have one "atom" input: the *frames* repo name with a '/*' glob pattern. The glob pattern defines how the input data can be broken up for parallel processing. `/*` means that each top level file can be processed individually, assuming you have enough workers available. Glob patterns are a powerful Pachyderm feature. 
 
 Third is the transform that specifies the Docker image to use, *discdiver/frames:v1.40* (defaults to Docker Hub for the registry). The transform also specifies the entrypoint script *frames.py*. 
 
@@ -97,7 +97,9 @@ If you are using the Pachyderm dashboard, you can expand the bottom right menu a
 
 ![Screenshot](images/ss19.png)
 
-The pipeline specifies that the *frames.py* Python script will run when a commit is made. A commit is made and *frames.py* is run when the pipeline is made for the first time, when data is added to the input repo, or when a pipeline is updated and Pachyderm is told the underlying code changed. Your Dockerfile tells Docker to package *frames.py* as part of the Docker image. 
+The pipeline specifies that the *frames.py* Python script will run when a commit is made. A commit is made and *frames.py* is run when the pipeline is made for the first time, when data is added to the input repo, or when a pipeline is updated and Pachyderm is told the underlying code changed. 
+
+Your Dockerfile tells Docker to package *frames.py* as part of the Docker image. 
 
 The `frames.py` code is below. 
 
@@ -207,7 +209,7 @@ Alternatively, in the Pachyderm dashboard, you can navigate to the output files 
 There's lots to checkout in the Pachyderm dashboard, so have a look around!
 
 ## Step 6: Keep building!
-You've seen just how easy it is to set up a Pachyderm pipeline that takes in video files, manipulates them, and outputs new image files. You've also had a quick look at the Pachyderm dashboard. Now you can go forth and make image slices from your favorite home videos to put on holiday cards, bibs, or banners.
+You've seen just how easy it is to set up a Pachyderm pipeline that takes in video files and outputs image files. You've also had a quick look at the Pachyderm dashboard. Now you can go forth and make image slices from your favorite home videos to put on holiday cards, bibs, or banners.
 
 To make changes to *frames.py* or *frames.json* and iterate quickly, check out the [Pachyderm Workflow](/pachderm_workflow.md) document.
 
