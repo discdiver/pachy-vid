@@ -34,12 +34,12 @@ In the code I used an updated version of opencv, a popular image and video proce
 I decided to output each video's frames to a labeled directory to demonstrate that subfolders can be easily created in Pachyderm. I labeled each image file with the name of the video it originated from and the frame number for a nice user experience.
 
 ### Dockerfile
-The final Dockerfile pulls from a Python opencv file with clear packages. This design keeps the Dockerfile clean.
+The Dockerfile uses an image with Python and opencv. 
 
 ### frames.py
-This is the main application file. I created a *make_images()* function to turn videos into images. The parameter *max_images* easily altered in the .json file if a different number is desired.
+This is the main application file. I created a *make_images()* function to turn videos into images. The parameter *max_images* is easily altered in the .json file if a different number is desired.
 
-The Function finds the total number of frames in video. The read and write functions are wrapped in a try-except block. Each video's frames, up to *max_images* are written to a file in a sub-directory with the name of the video. Each image file is identified by the video's prefix and the frame number. 
+The function finds the total number of frames in video. The read and write functions are wrapped in a try-except block. Each video's frames, up to *max_images* are written to a file in a sub-directory with the name of the video. Each image file is identified by the video's prefix and the frame number. 
 
 This script walks the file system to find files that match the specified video formats and calls *make_images()* for each file.
 
